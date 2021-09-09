@@ -6,16 +6,30 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--CSS-->
+    <link rel="stylesheet" href="style.css">
     <!--Title-->
     <title>Speech Recognition</title>
 </head>
 
-<body>
-    <p id="textarea"></p>
-    <button id="gravar">Gravar</button>
-    <button id="parar">Parar de gravar</button>
+<body class="body">
+
+    <main class="main">
+        <!--Textarea onde o output será inserido-->
+        <div class="textarea-div">
+            <textarea name="laudo" id="laudo" class="laudo" rows="10" placeholder="Texto será inserido aqui"></textarea>
+        </div>
+
+        <!--Div dos botões-->
+        <div class="buttons">
+            <button id="gravar" class="button">Gravar</button>
+            <button id="parar" class="button">Parar de gravar</button>
+        </div>
+
+    </main>
+
     <!--Nosso código JS-->
-    <script src="./script.js"></script>
+    <script src="./app.js"></script>
 </body>
 
 </html>

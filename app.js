@@ -1,5 +1,6 @@
 
-document.addEventListener("DOMContentLoaded", async () => {
+// Script a ser vinculado assim que a página for carregada
+document.addEventListener("DOMContentLoaded", _ => {
     // Selecionando alguns elementos da interface
     const gravar = document.getElementById("gravar")
     const parar = document.getElementById("parar")
@@ -9,11 +10,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Instanciando o objeto da classe SpeechRecognition
     window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-    const reconhecimento = await new window.SpeechRecognition()
+    const reconhecimento = new window.SpeechRecognition()
 
-    // Adicionando o eventListener no botão "Gravar"
-    gravar.addEventListener("click", async () => {
-        // Reiniciando o status do botão e informando ao usuário que o microfone está gravando
+    // Vinculando uma função callback no botão "Gravar" para o evento click
+    gravar.addEventListener("click", _ => {
+        // Alterando o status do botão e informando ao usuário que o microfone está gravando
         if (parar.disabled) {
             parar.removeAttribute("disabled")
         }
@@ -24,20 +25,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     })
 
-    // Adicionando o eventListener no botão "Parar"
-    parar.addEventListener("click", async () => {
+    // Vinculando uma função callback no botão "Parar" para o evento click
+    parar.addEventListener("click", _ => {
         // Voltando ao status inicial
         gravar.innerHTML = "Gravar"
         if (!parar.disabled) {
             parar.setAttribute("disabled", "disabled")
         }
 
-        await reconhecimento.stop()
+        // Finalizando a gravação e a interpretação de áudio
+        reconhecimento.stop()
 
     })
 
     reconhecimento.addEventListener('result', event => {
-        const output = document.getElementById("textarea")
+        // Selecionando o elemento de output do texto
+        const output = document.getElementById("laudo")
 
         // Cria um array com os valores do objeto 'event.results'
         let text = Array.from(event.results)
