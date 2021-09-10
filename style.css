@@ -58,6 +58,11 @@
     color: #000000;
 }
 
+.button.disabled:hover {
+    background-color: #7189FF;
+    color: white;
+}
+
 .disabled {
     cursor: initial;
     opacity: 0.4;
