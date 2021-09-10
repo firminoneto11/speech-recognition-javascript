@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--CSS-->
     <link rel="stylesheet" href="style.css">
+    <!--Fontawesome para ícones-->
+    <script src="https://kit.fontawesome.com/5519e027be.js" crossorigin="anonymous"></script>
     <!--Title-->
     <title>Speech Recognition</title>
 </head>
@@ -15,6 +17,8 @@
 <body class="body">
 
     <main class="main">
+        <!--Titulo-->
+        <h1 class="titulo">Reconhecimento de voz com Vanila Javascript</h1>
         <!--Textarea onde o output será inserido-->
         <div class="textarea-div">
             <textarea name="laudo" id="laudo" class="laudo" rows="10" placeholder="Texto será inserido aqui"></textarea>
@@ -22,8 +26,9 @@
 
         <!--Div dos botões-->
         <div class="buttons">
-            <button id="gravar" class="button">Gravar</button>
-            <button id="parar" class="button">Parar de gravar</button>
+            <button id="gravar" class="button"><i class="fas fa-microphone">&nbsp;&nbsp;Gravar</i></button>
+            <button id="parar" class="button disabled"><i class="fas fa-microphone-slash">&nbsp;&nbsp;Parar de
+                    gravar</i></button>
         </div>
 
     </main>

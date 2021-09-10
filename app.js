@@ -7,10 +7,14 @@ document.addEventListener("DOMContentLoaded", _ => {
 
     // Marcando o botão parar desabilitado
     parar.setAttribute("disabled", "disabled")
+    parar.classList.add("disabled")
 
     // Instanciando o objeto da classe SpeechRecognition
     window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
     const reconhecimento = new window.SpeechRecognition()
+    reconhecimento.lang = "pt-br"
+    reconhecimento.continuous = true
+    reconhecimento.interimResults = true
 
     // Vinculando uma função callback no botão "Gravar" para o evento click
     gravar.addEventListener("click", _ => {
@@ -18,7 +22,10 @@ document.addEventListener("DOMContentLoaded", _ => {
         if (parar.disabled) {
             parar.removeAttribute("disabled")
         }
-        gravar.innerHTML = "Gravando..."
+        if (parar.className === "button disabled") {
+            parar.classList.remove("disabled")
+        }
+        gravar.firstChild.innerHTML = "  Gravando..."
 
         // Capturando o audio
         reconhecimento.start()
@@ -28,9 +35,12 @@ document.addEventListener("DOMContentLoaded", _ => {
     // Vinculando uma função callback no botão "Parar" para o evento click
     parar.addEventListener("click", _ => {
         // Voltando ao status inicial
-        gravar.innerHTML = "Gravar"
+        gravar.firstChild.innerHTML = "  Gravar"
         if (!parar.disabled) {
             parar.setAttribute("disabled", "disabled")
+        }
+        if (parar.className !== "button disabled") {
+            parar.classList.add("disabled")
         }
 
         // Finalizando a gravação e a interpretação de áudio
@@ -38,7 +48,7 @@ document.addEventListener("DOMContentLoaded", _ => {
 
     })
 
-    reconhecimento.addEventListener('result', event => {
+    reconhecimento.addEventListener("result", event => {
         // Selecionando o elemento de output do texto
         const output = document.getElementById("laudo")
 
@@ -55,6 +65,6 @@ document.addEventListener("DOMContentLoaded", _ => {
         text = text.join("")
 
         // Inserindo a string final no elemento no html
-        output.innerHTML = text
+        output.value = text
     })
 })
