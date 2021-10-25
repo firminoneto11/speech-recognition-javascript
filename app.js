@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", _ => {
 
     let ACTIVATED_BY_USER = false
 
-
     // Selecionando alguns elementos da interface
     const gravar = document.getElementById("gravar")
     const parar = document.getElementById("parar")
@@ -90,17 +89,21 @@ document.addEventListener("DOMContentLoaded", _ => {
         text = text.join("")
 
         // Inserindo a string final no elemento no html
-        output.value.length > 0 ? output.value += '.\n' : null
         output.value = text
     })
 
     reconhecimento.addEventListener("end", _ => {
-        console.log('Evento trigado.')
-
         // Verificando se o evento foi disparado pelo usuário
-        ACTIVATED_BY_USER ? reconhecimento.stop() : reconhecimento.start()
-
-        // Resetando o estado da variável
-        ACTIVATED_BY_USER = false
+        if (ACTIVATED_BY_USER) {
+            // Finalizando o processo de transcrição e resetando o estado da variável global
+            ACTIVATED_BY_USER = false
+            reconhecimento.stop()
+        }
+        else {
+            const output = document.getElementById("laudo")
+            output.value.length > 0 ? output.value += '.\n' : null
+            reconhecimento.start()
+        }        
+        // ACTIVATED_BY_USER ? reconhecimento.stop() : reconhecimento.start()
     })
 })
