@@ -1,6 +1,10 @@
 
 // Script a ser vinculado assim que a página for carregada
 document.addEventListener("DOMContentLoaded", _ => {
+
+    let ACTIVATED_BY_USER = false
+
+
     // Selecionando alguns elementos da interface
     const gravar = document.getElementById("gravar")
     const parar = document.getElementById("parar")
@@ -25,6 +29,15 @@ document.addEventListener("DOMContentLoaded", _ => {
         if (parar.className === "button disabled") {
             parar.classList.remove("disabled")
         }
+
+        // Desabilitando o botão para impedir que uma nova gravação seja realizada
+        if (!gravar.disabled) {
+            gravar.setAttribute("disabled", "disabled")
+        }
+        if (gravar.className === "button") {
+            gravar.classList.add("disabled")
+        }
+
         gravar.firstChild.innerHTML = "  Gravando..."
 
         // Capturando o audio
@@ -43,6 +56,17 @@ document.addEventListener("DOMContentLoaded", _ => {
             parar.classList.add("disabled")
         }
 
+        // Habilitando o botão para que uma nova gravação seja realizada
+        if (gravar.disabled) {
+            gravar.removeAttribute("disabled")
+        }
+        if (gravar.className === "button disabled") {
+            gravar.classList.remove("disabled")
+        }
+
+        // Alterando o valor da variável global para que ela não dispare outra chamada à api do web recg
+        ACTIVATED_BY_USER = true
+
         // Finalizando a gravação e a interpretação de áudio
         reconhecimento.stop()
 
@@ -55,16 +79,28 @@ document.addEventListener("DOMContentLoaded", _ => {
         // Cria um array com os valores do objeto 'event.results'
         let text = Array.from(event.results)
 
-        // Mapeando cada elemento do array anterior para um novo array contendo apenas os elementos no indice 0
-        text = text.map(result => result[0])
+        // Mapeando cada elemento do array anterior para um novo array contendo apenas os elementos no indice 0 e em
+        // seguida mapeando cada elemento do array anterior para um novo array contento apenas os valores do atributo 
+        // 'transcript'.
+        text = text.map(result => result[0]).map(result => result.transcript)
 
-        // Mapeando cada elemento do array anterior para um novo array contento apenas os valores do atributo 'transcript'
-        text = text.map(result => result.transcript)
+        // text = text.map(result => result.transcript)
 
         // Transformando o array resultante em uma string
         text = text.join("")
 
         // Inserindo a string final no elemento no html
+        output.value.length > 0 ? output.value += '.\n' : null
         output.value = text
+    })
+
+    reconhecimento.addEventListener("end", _ => {
+        console.log('Evento trigado.')
+
+        // Verificando se o evento foi disparado pelo usuário
+        ACTIVATED_BY_USER ? reconhecimento.stop() : reconhecimento.start()
+
+        // Resetando o estado da variável
+        ACTIVATED_BY_USER = false
     })
 })
