@@ -103,8 +103,9 @@ document.addEventListener("DOMContentLoaded", _ => {
 
         // Verificando se o evento foi disparado pelo usuário
         if (ACTIVATED_BY_USER) {
-            // Finalizando o processo de transcrição e resetando o estado da variável global
+            // Finalizando o processo de transcrição e resetando o estado das variáveis global
             reconhecimento.stop()
+            transcripted = ''
             ACTIVATED_BY_USER = false
         }
         else {
