@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", _ => {
     // Selecionando alguns elementos da interface
     const gravar = document.getElementById("gravar")
     const parar = document.getElementById("parar")
+    const output = document.getElementById("laudo")
 
     // Marcando o botão parar desabilitado
     parar.setAttribute("disabled", "disabled")
@@ -73,9 +74,6 @@ document.addEventListener("DOMContentLoaded", _ => {
     })
 
     reconhecimento.addEventListener("result", event => {
-        // Selecionando o elemento de output do texto
-        const output = document.getElementById("laudo")
-
         // Cria um array com os valores do objeto 'event.results'
         let text = Array.from(event.results)
 
@@ -90,27 +88,28 @@ document.addEventListener("DOMContentLoaded", _ => {
         text = text.join("")
 
         // Inserindo a string final no elemento no html
-        if (transcripted.length > 0) {
-            output.value = transcripted
-            transcripted = ''
-        }
+        text = transcripted + text
         output.value = text
     })
 
+    reconhecimento.addEventListener("start", _ => {
+        output.value = transcripted
+    })
+
     reconhecimento.addEventListener("end", _ => {
-        const output = document.getElementById("laudo")
-        transcripted = output.value + '.\n'
+
+        output.value.length > 0 ? transcripted = output.value + '.\n' : transcripted = output.value
 
         // Verificando se o evento foi disparado pelo usuário
         if (ACTIVATED_BY_USER) {
-            // Finalizando o processo de transcrição e resetando o estado das variáveis global
+            // Finalizando o processo de transcrição e resetando o estado das variáveis globais
             reconhecimento.stop()
             transcripted = ''
             ACTIVATED_BY_USER = false
         }
         else {
             reconhecimento.start()
-        }        
+        }
         // ACTIVATED_BY_USER ? reconhecimento.stop() : reconhecimento.start()
     })
 })
