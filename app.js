@@ -3,6 +3,7 @@
 document.addEventListener("DOMContentLoaded", _ => {
 
     let ACTIVATED_BY_USER = false
+    let transcripted = ''
 
     // Selecionando alguns elementos da interface
     const gravar = document.getElementById("gravar")
@@ -89,19 +90,24 @@ document.addEventListener("DOMContentLoaded", _ => {
         text = text.join("")
 
         // Inserindo a string final no elemento no html
+        if (transcripted.length > 0) {
+            output.value = transcripted
+            transcripted = ''
+        }
         output.value = text
     })
 
     reconhecimento.addEventListener("end", _ => {
+        const output = document.getElementById("laudo")
+        transcripted = output.value + '.\n'
+
         // Verificando se o evento foi disparado pelo usuário
         if (ACTIVATED_BY_USER) {
             // Finalizando o processo de transcrição e resetando o estado da variável global
-            ACTIVATED_BY_USER = false
             reconhecimento.stop()
+            ACTIVATED_BY_USER = false
         }
         else {
-            const output = document.getElementById("laudo")
-            output.value.length > 0 ? output.value += '.\n' : null
             reconhecimento.start()
         }        
         // ACTIVATED_BY_USER ? reconhecimento.stop() : reconhecimento.start()
